@@ -1,7 +1,6 @@
 #include "Tetris.h"
 #include "Tetrimino.h"
 #include "Stats.h"
-#include <iostream>
 #include <list>
 #include <algorithm>    // std::random_shuffle
 #include <ctime>        // std::time
@@ -33,7 +32,7 @@ class Tetris
 
 	}
 
-	bool Tetris::update(int time)
+	bool Tetris::update()
 	{
 		if(running)
 		{
@@ -46,7 +45,7 @@ class Tetris
 					{
 						//log("creating new tetrimino");
 						//actTet = new Tetrimino(4, 0, game.tetQueue.dequeue());
-						actTet.init(4, 0, tetQueue.front());
+						actTet.init(4, 0, tetQueue.front(), *this);
 						tetQueue.pop_front();
 						checkQueue();
 					}
@@ -91,12 +90,6 @@ class Tetris
 		running = false;
 		stat.init();
 		checkQueue();
-		//game.music = document.getElementById("music");
-		//game.music.volume = 0.05;
-		//game.music.loop = true;
-		//game.sfx = document.getElementById("sfx");
-		//game.sfx.volume = 0.8;
-		// log("End initialization");
 	}
 
 	void Tetris::reset()

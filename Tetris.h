@@ -1,17 +1,18 @@
-#pragma once
+//#pragma once
 
 #ifndef _tetris_h_inluded_
 #define _tetris_h_inluded_
-#include "Tetrimino.h"
 #include "Stats.h"
+
+#define ROWS 22
+#define COL 10
+
+class Tetrimino;
 
 class Tetris
 {
 	Tetris(void);
 	~Tetris(void);
-	
-	const int ROWS = 22;
-	const int COL = 10;
 
 private:
 	double baseDrp;
@@ -53,6 +54,6 @@ public:
 	private void clearFilled();
 	private bool rowStatus(int row);
 	private void clearRow(int startRow);
-}
+};
 
 #endif
