@@ -17,14 +17,16 @@ public:
 	~View();
 	void init(const Tetris &tgame);
 	void update();
+	int getInput();
 
 private:
-	const int hiddenRows = 2;
+	static const int hiddenRows = 2;
 	Tetris game;
 	WINDOW *gameWin;
 	WINDOW *scoreWin;
 	WINDOW *holdWin;
 	WINDOW* createWin(const int rows, const int cols, const int ypos, const int xpos);
 	void colorBlock(const int x, const int y, WINDOW* win);
-	int getInput();
 };
+
+#endif

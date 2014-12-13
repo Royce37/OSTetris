@@ -1,5 +1,89 @@
 #include "Tetris.h"
 
+int const pieces = {
+					{//I block
+						{{0,1},{1,1},{2,1},{3,1}}, {{2,0},{2,1},{2,2},{2,3}}, {{0,2},{1,2},{2,2},{3,2}}, {{1,0},{1,1},{1,2},{1,3}}
+					},
+					{//O block
+						{{0,0},{1,0},{0,1},{1,1}}, {{0,0},{1,0},{0,1},{1,1}}, {{0,0},{1,0},{0,1},{1,1}}, {{0,0},{1,0},{0,1},{1,1}}
+					},
+					{//T block
+						{{1,0},{0,1},{1,1},{2,1}},{{1,0},{1,1},{2,1},{1,2}},{{0,1},{1,1},{2,1},{1,2}},{{1,0},{0,1},{1,1},{1,2}}
+					},
+					{//S block
+						{{1,0},{2,0},{0,1},{1,1}},{{1,0},{1,1},{2,1},{2,2}},{{1,1},{2,1},{0,2},{1,2}},{{0,0},{0,1},{1,1},{1,2}}
+					},
+					{//Z block
+						{{0,0},{1,0},{1,1},{2,1}},{{2,0},{1,1},{2,1},{1,2}},{{0,1},{1,1},{1,2},{2,2}},{{1,0},{0,1},{1,1},{0,2}}
+					},
+					{//J block
+						{{0,0},{0,1},{1,1},{2,1}},{{1,0},{2,0},{1,1},{1,2}},{{0,1},{1,1},{2,1},{2,2}},{{1,0},{1,1},{0,2},{1,2}}
+					},
+					{//L block
+						{{2,0},{0,1},{1,1},{2,1}},{{1,0},{1,1},{1,2},{2,2}},{{0,1},{1,1},{2,1},{0,2}},{{0,0},{1,0},{1,1},{1,2}}
+					}
+				 };
+				 
+int const rotRight = {
+						{//state 0 to R
+							{0,0},{-1,0},{-1,1},{0,-2},{-1,-2}
+						},
+						{//state 1/R to 2
+							{0,0},{1,0},{1,-1},{0,2},{1,2}
+						},
+						{//state 2 to L
+							{0,0},{1,0},{1,1},{0,-2},{1,-2}
+						},
+						{//state 3/L to 0
+							{0,0},{-1,0},{-1,-1},{0,2},{-1,2}
+						}
+					};
+				
+ const int rotLeft = {
+						{//state 0 to L
+							{0,0},{1,0},{1,1},{0,-2},{1,-2}
+						},
+						{//state 1/R to 0
+							{0,0},{1,0},{1,-1},{0,2},{1,2}
+						},
+						{//state 2 to R
+							{0,0},{-1,0},{-1,1},{0,-2},{-1,-2}
+						},
+						{//state 3/L to 2
+							{0,0},{-1,0},{-1,-1},{0,2},{-1,2}
+						}
+					};
+					
+const int rotRightI = {
+						{//state 0 to R
+							{0,0},{-2,0},{1,0},{-2,-1},{1,2}
+						},
+						{//state 1/R to 2
+							{0,0},{-1,0},{2,0},{-1,2},{2,-1}
+						},
+						{//state 2 to L
+							{0,0},{2,0},{-1,0},{2,1},{-1,-2}
+						},
+						{//state 3/L to 0
+							{0,0},{1,0},{-2,0},{1,-2},{-2,1}
+						}
+					};
+					
+const int rotLeftI = {
+							{//state 0 to L
+								{0,0},{-1,0},{2,0},{-1,2},{2,-1}
+							},
+							{//state 1/R to 0
+								{0,0},{2,0},{-1,0},{2,1},{-1,-2}
+							},
+							{//state 2 to R
+								{0,0},{1,0},{-2,0},{1,-2},{-2,1}
+							},
+							{//state 3/L to 2
+								{0,0},{-2,0},{1,0},{-2,-1},{1,2}
+							}
+						};
+
 void Tetrimino::init(int posx, int posy, int ttype, Tetris &tgame)
 {
 	x = posx;
@@ -44,14 +128,16 @@ void Tetrimino::drop()
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = 0;
+		game.setCoord(y+offY,x+offX, 0);
+		//game.matrix[y+offY][x+offX] = 0;
 	}
 	y++;
 	for(i = 0; i < PIECE_SIZE; i++)
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = typ;
+		game.setCoord(y+offY,x+offX, typ);
+		//game.matrix[y+offY][x+offX] = typ;
 	}
 }
 
@@ -89,14 +175,16 @@ void Tetrimino::moveLeft()
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = 0;
+		game.setCoord(y+offY,x+offX, 0);
+		//game.matrix[y+offY][x+offX] = 0;
 	}
 	x--;
 	for(i = 0; i < PIECE_SIZE; i++)
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = typ;
+		game.setCoord(y+offY,x+offX, typ);
+		//game.matrix[y+offY][x+offX] = typ;
 	}
 }
 
@@ -134,14 +222,16 @@ void Tetrimino::moveRight()
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = 0;
+		game.setCoord(y+offY,x+offX, 0);
+		//game.matrix[y+offY][x+offX] = 0;
 	}
 	x++;
 	for(var i = 0; i < PIECE_SIZE; i++)
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = typ;
+		game.setCoord(y+offY,x+offX, typ);
+		//game.matrix[y+offY][x+offX] = typ;
 	}
 }
 
@@ -212,7 +302,8 @@ void Tetrimino::rotateRight()
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = 0;
+		game.setCoord(y+offY,x+offX, 0);
+		//game.matrix[y+offY][x+offX] = 0;
 	}
 	offset = checkRotateRight();
 	//log(offset);
@@ -226,7 +317,8 @@ void Tetrimino::rotateRight()
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = typ;
+		game.setCoord(y+offY,x+offX, typ);
+		//game.matrix[y+offY][x+offX] = typ;
 	}
 }
 
@@ -299,7 +391,8 @@ void Tetrimino::rotateLeft()
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = 0;
+		game.setCoord(y+offY,x+offX, 0);
+		//game.matrix[y+offY][x+offX] = 0;
 	}
 	offset = checkRotateLeft();
 	//log(offset);
@@ -313,7 +406,8 @@ void Tetrimino::rotateLeft()
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
-		game.matrix[y+offY][x+offX] = typ;
+		game.setCoord(y+offY,x+offX, typ);
+		//game.matrix[y+offY][x+offX] = typ;
 	}
 }
 

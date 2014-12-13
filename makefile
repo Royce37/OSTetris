@@ -9,17 +9,17 @@ MKDIR=mkdir -p
 CFLAGS=-Wall -fomit-frame-pointer -O3
 LIBS=-lm -lncurses
 
-OBJS=Main.o Tetris.o View.o Tetrimino.o Stats.o
+OBJS=main.o Tetris.o View.o Tetrimino.o Stats.o
 OUTPUT=Tetris
 #MANS=ctris.6.gz
 
 
 all:
-	make config
 	make build
+#	make config
 	
-config:	
-	./create_config.sh
+#config:	
+#	./create_config.sh
 
 build: $(OUTPUT)
 
@@ -27,7 +27,7 @@ $(OUTPUT): $(OBJS)
 	$(CC) $(CFLAGS) -o $(OUTPUT) $(OBJS) $(LIBS)
 
 
-%.o: %.c
+%.o: %.cpp
 	$(CC) $(CFLAGS) -c $<
 
 

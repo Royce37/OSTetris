@@ -144,6 +144,9 @@ int View::getInput()
 				case 'q':
 					status = 2;
 					break;
+				case 's':
+					game.start();
+					break;
 			}
     }
 	//flushBuffer();

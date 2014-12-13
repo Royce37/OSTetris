@@ -1,7 +1,7 @@
 #include "Tetris.h"
 #include "View.h"
 #include <iostream>
-#include <time.h>			// GetTickCount
+#include <sys/time.h>			// GetTickCount
 #include <curses.h>
 
 using namespace std;
@@ -15,14 +15,14 @@ int main()
 	const int MAX_FRAMESKIP = 10;
 
     unsigned long next_game_tick = GetTickCount();
-	int loops
+	int loops = 0;
 
 	Tetris game;
 	game.init();
 	View view;
-	view.init(&game);
+	view.init(game);
 
-    int sleep_time = 0;
+    //int sleep_time = 0;
 	int quit = 0;
 
     bool game_is_running = true;
