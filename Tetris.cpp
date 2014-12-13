@@ -27,7 +27,10 @@ Tetris::Tetris()
 
 Tetris::~Tetris()
 {
-
+	if(actTet != NULL)
+	{
+		delete actTet;
+	}
 }
 
 bool Tetris::update()
@@ -37,13 +40,13 @@ bool Tetris::update()
 		dropCnt++;
 		if(dropCnt > drpRate)
 		{
-			if(actTet.isActive() == false)
+			if(actTet->isActive() == false)
 			{
 				if(canSpawn())
 				{
 					//log("creating new tetrimino");
 					//actTet = new Tetrimino(4, 0, game.tetQueue.dequeue());
-					actTet.init(4, 0, tetQueue.front(), *this);
+					actTet->init(4, 0, tetQueue.front(), *this);
 					tetQueue.pop_front();
 					checkQueue();
 				}
@@ -54,20 +57,20 @@ bool Tetris::update()
 			}
 			else
 			{
-				//log(game.actTet.canDrop());
-				if(actTet.canDrop())
+				//log(game.actTet->canDrop());
+				if(actTet->canDrop())
 				{
 					if(delayCnt > 0)
 					{
 						delayCnt = 0;
 					}
-					actTet.drop();
+					actTet->drop();
 				}
 				else
 				{
 					if(delayCnt > placeDelay || snapped === true)
 					{
-						actTet.setActive(false);
+						actTet->setActive(false);
 						delayCnt = 0;
 						//sfx.play();
 						clearFilled();
@@ -98,7 +101,7 @@ void Tetris::reset()
 	running = false;
 	tetQueue.erase();
 	checkQueue();
-	actTet.reset();
+	actTet->reset();
 	createGridMatrix();
 	stat.reset();
 	//game.music.pause();
@@ -135,59 +138,59 @@ bool Tetris::isRunning()
 }
 void Tetris::left()
 {
-	if(running && actTet.isActive())
+	if(running && actTet->isActive())
 	{
-		//log(game.actTet.checkLeft());
-		if(actTet.checkLeft())
+		//log(game.actTet->checkLeft());
+		if(actTet->checkLeft())
 		{
-			actTet.moveLeft();
+			actTet->moveLeft();
 		}
 	}
 }
 void Tetris::right()
 {
-	if(running && actTet.isActive())
+	if(running && actTet->isActive())
 	{
-		//log(game.actTet.checkRight());
-		if(actTet.checkRight())
+		//log(game.actTet->checkRight());
+		if(actTet->checkRight())
 		{
-			actTet.moveRight();
+			actTet->moveRight();
 		}
 	}
 }
 void Tetris::down()
 {
-	if(running && actTet.isActive())
+	if(running && actTet->isActive())
 	{
-		if(actTet.canDrop())
+		if(actTet->canDrop())
 		{
-			actTet.drop();
+			actTet->drop();
 		}
 	}
 }
 void Tetris::hardDrop()
 {
-	if(running && actTet.isActive())
+	if(running && actTet->isActive())
 	{
-		while(actTet.canDrop())
+		while(actTet->canDrop())
 		{
-			actTet.drop();
+			actTet->drop();
 		}
 		snapped = true;
 	}
 }
 void Tetris::rotateRight()
 {
-	if(running && actTet.isActive())
+	if(running && actTet->isActive())
 	{
-		actTet.rotateRight();
+		actTet->rotateRight();
 	}
 }
 void Tetris::rotateLeft()
 {
-	if(running && actTet.isActive())
+	if(running && actTet->isActive())
 	{
-		actTet.rotateLeft();
+		actTet->rotateLeft();
 	}
 }
 

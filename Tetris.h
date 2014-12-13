@@ -3,7 +3,6 @@
 #ifndef _tetris_h_inluded_
 #define _tetris_h_inluded_
 #include "Stats.h"
-#include "Tetrimino.h"
 #include <list>
 
 #define ROWS 22
@@ -18,7 +17,7 @@ private:
 	int FPS;
 	double drpRate;
 	bool running;
-	Tetrimino actTet;
+	Tetrimino *actTet;
 	std::list<int> tetQueue;
 	double placeDelay;
 	bool snapped;
