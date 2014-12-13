@@ -7,6 +7,7 @@ void Tetrimino::init(int posx, int posy, int ttype, Tetris &tgame)
 	typ = ttype;
 	game = tgame;
 	rot = 0;
+	hasSpawned = true;
 }
 
 bool Tetrimino::canDrop()
@@ -314,4 +315,13 @@ void Tetrimino::rotateLeft()
 		offY = pieces[type][rot][i][1];
 		game.matrix[y+offY][x+offX] = typ;
 	}
+}
+
+void Tetrimino::setActive(bool set)
+{
+	hasSpawned = set;
+}
+bool isActive()
+{
+	return hasSpawned;
 }

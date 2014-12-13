@@ -59,16 +59,19 @@ class Tetris
 					//log(game.actTet.canDrop());
 					if(actTet.canDrop())
 					{
-						if(delayCnt > 0){delayCnt = 0;}
+						if(delayCnt > 0)
+						{
+							delayCnt = 0;
+						}
 						actTet.drop();
 					}
 					else
 					{
 						if(delayCnt > placeDelay || snapped === true)
 						{
-							actTet = null;
+							actTet.setActive(false);
 							delayCnt = 0;
-							sfx.play();
+							//sfx.play();
 							clearFilled();
 							snapped = false;
 						}
@@ -105,20 +108,20 @@ class Tetris
 	void Tetris::start()
 	{
 		reset();
-		stat.start(level);
-		drpRate = (baseDrp-(stat.level*spdPerLvl)) * FPS;
+		//stat.start(level);
+		drpRate = (baseDrp-(stat.getLevel() * spdPerLvl)) * FPS;
 		running = true;
-		placeDelay = 1 + (stat.level * 1.5);
+		placeDelay = 1 + (stat.getLevel() * 1.5);
 		//game.music.play();
 	}
-	bool Tetris::pause(bool stop)
+	bool Tetris::pause()
 	{
-		if(stop)
+		if(running == true)
 		{
 			running = false;
 			//game.music.pause();
 		}
-		else
+		else if(running == false)
 		{
 			running = true;
 		}
@@ -193,7 +196,8 @@ class Tetris
 
 	bool Tetris::canSpawn()
 	{
-		for(var i = 4; i < 8; i++)
+		int i;
+		for(i = 4; i < 8; i++)
 		{
 			if(matrix[1][i] != 0 || matrix[0][i] != 0)
 			{
@@ -223,11 +227,10 @@ class Tetris
 
 	void Tetris::createGridMatrix()
 	{
-		// log("Creating game matrix in Tetris.creatGridMatrix");
-		//matrix = new Array(game.rows);
-		for(var i = 0; i < ROWS; i++)
+		int i, j;
+		for(i = 0; i < ROWS; i++)
 		{
-			for(var j = 0; j < COL; j++)
+			for(j = 0; j < COL; j++)
 			{
 				matrix[i][j] = 0;
 			}
@@ -239,9 +242,9 @@ class Tetris
 	void Tetris::clearFilled()
 	{
 		List<int> toClear;
-		int tFilled = 1;
-		int preClearLvl = stat.level;
-		for(int ROWS-1; i > 0 && tFilled > 0; i--)
+		int tFilled = 1, i, k;
+		int preClearLvl = stat.getLevel();
+		for(i = ROWS-1; i > 0 && tFilled > 0; i--)
 		{
 			tFilled = rowStatus(i);
 			if(tFilled == 10)
@@ -252,16 +255,16 @@ class Tetris
 		// log("rows to clear: "+toClear);
 		//Update score
 		stat.statUpdate(toClear.size());
-		for(int k = toClear.size()-1; k >= 0; k--)
+		for(k = toClear.size()-1; k >= 0; k--)
 		{
 			//log("clearing row: " + toClear[k]);
 			clearRow(toClear.front());
 			toClear.pop_front();
 		}
-		if(preClearLvl < stat.level)
+		if(preClearLvl < stat.getLevel())
 		{
-			drpRate = (baseDrp-(stat.level*spdPerLvl)) * FPS;
-			placeDelay = 1 + (stat.level * 1.5);
+			drpRate = (baseDrp-(stat.getLevel() * spdPerLvl)) * FPS;
+			placeDelay = 1 + (stat.getLevel() * 1.5);
 		}
 	}
 
@@ -283,9 +286,10 @@ class Tetris
 	//			above that row down by 1
 	void Tetris::clearRow(int startRow)
 	{
-		for(int iter = startRow; iter >= 0 && rowStatus(iter) > 0; iter--)
+		int iter, j;
+		for(iter = startRow; iter >= 0 && rowStatus(iter) > 0; iter--)
 		{
-			for(var j = 0; j < COL; j++)
+			for(j = 0; j < COL; j++)
 			{
 				if(iter == 0)
 				{

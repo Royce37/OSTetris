@@ -109,6 +109,8 @@ public:
 	void rotateRight();
 	bool checkRotateLeft();
 	void rotateLeft();
+	void setActive(bool set);
+	bool isActive();
 };
 
 #endif
