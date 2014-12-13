@@ -5,9 +5,10 @@ MKDIR=mkdir -p
 CFLAGS=-Wall -fomit-frame-pointer -O3
 LIBS=-lm -lncurses
 
-SRCS=main.cpp View.cpp Tetris.cpp Tetrimino.cpp Stats.cpp
-OBJS=$(subst .cc,.o,$(SRCS))
+SRCS=
+OBJS=main.o Tetris.o View.o Tetrimino.o Stats.o
 OUTPUT=Tetris
+
 
 all:
 	make build
