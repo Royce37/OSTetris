@@ -1,4 +1,5 @@
 //Stats.cpp
+#include "Stats.h"
 
 Stats::Stats()
 {
@@ -10,6 +11,18 @@ Stats::Stats()
 	challenge = false;
 	lineReqs = 20;
 }
+
+void Stats::init()
+{
+	totalLines = 0;
+	linesNextLvl = 0;
+	score = 0;
+	level = 1;
+	comboCnt = 0;
+	challenge = false;
+	lineReqs = 20;
+}
+
 int Stats::calcScore(int lines)
 {
 	int tScore = 0;
@@ -34,13 +47,14 @@ int Stats::calcScore(int lines)
 			tScore *= b2bMult;
 		}
 	}
-	if(stats.comboCnt > 0)
+	if(comboCnt > 0)
 	{
 		tScore += 50 * comboCnt * level;
 	}
 	comboCnt++;
 	return tScore;
 }
+
 void Stats::statUpdate(int lines)
 {
 	if(lines == 0)
@@ -63,6 +77,7 @@ void Stats::statUpdate(int lines)
 		lineUpdate(lines);
 	}
 }
+
 void Stats::lineUpdate(int lines)
 {
 	totalLines += lines;
@@ -74,10 +89,12 @@ void Stats::lineUpdate(int lines)
 		linesNextLvl += lineReqs;
 	}
 }
+
 int Stats::getScore()
 {
 	return score;
 }
+
 void Stats::reset()
 {
 	totalLines = 0;
@@ -87,6 +104,7 @@ void Stats::reset()
 	comboCnt = 0;
 	challenge = false;
 }
+
 void Stats::start(int level)
 {
 	if(level > 0)
@@ -101,7 +119,7 @@ void Stats::start(int level)
 	linesNextLvl = lineReqs;
 }
 
-int getLevel()
+int Stats::getLevel()
 {
 	return level;
 }

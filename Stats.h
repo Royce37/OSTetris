@@ -24,5 +24,6 @@ public:
 	void reset();
 	void start(int level);
 	int getLevel();
+	void init();
 };
 #endif

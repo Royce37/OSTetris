@@ -1,6 +1,8 @@
 #include "Tetris.h"
 #include "Tetrimino.h"
 #include "Stats.h"
+#include <iostream>		//mostly for NULL
+#include <vector>
 #include <list>
 #include <algorithm>    // std::random_shuffle
 #include <ctime>        // std::time
@@ -14,10 +16,11 @@ Tetris::Tetris()
 	FPS = 30;
 	drpRate = 1;
 	running = false;
-	matrix[] = null;
+	createGridMatrix();
 	placeDelay = 0;
 	snapped = false;
 	spdPerLvl = .05;
+	actTet =  new Tetrimino();
 
 	dropCnt = 0;
 	delayCnt = 0;
@@ -33,14 +36,14 @@ Tetris::~Tetris()
 	}
 }
 
-bool Tetris::update()
+void Tetris::update()
 {
 	if(running)
 	{
 		dropCnt++;
 		if(dropCnt > drpRate)
 		{
-			if(actTet->isActive() == false)
+			if(actTet == NULL)
 			{
 				if(canSpawn())
 				{
@@ -68,9 +71,9 @@ bool Tetris::update()
 				}
 				else
 				{
-					if(delayCnt > placeDelay || snapped === true)
+					if(delayCnt > placeDelay || snapped == true)
 					{
-						actTet->setActive(false);
+						actTet = NULL;
 						delayCnt = 0;
 						//sfx.play();
 						clearFilled();
@@ -94,14 +97,15 @@ bool Tetris::init()
 	running = false;
 	stat.init();
 	checkQueue();
+	return true;
 }
 
 void Tetris::reset()
 {
 	running = false;
-	tetQueue.erase();
+	tetQueue.clear();
 	checkQueue();
-	actTet->reset();
+	actTet = NULL;
 	createGridMatrix();
 	stat.reset();
 	//game.music.pause();
@@ -109,13 +113,13 @@ void Tetris::reset()
 void Tetris::start()
 {
 	reset();
-	//stat.start(level);
+	stat.start(1);
 	drpRate = (baseDrp-(stat.getLevel() * spdPerLvl)) * FPS;
 	running = true;
 	placeDelay = 1 + (stat.getLevel() * 1.5);
 	//game.music.play();
 }
-bool Tetris::pause()
+void Tetris::pause()
 {
 	if(running == true)
 	{
@@ -138,7 +142,7 @@ bool Tetris::isRunning()
 }
 void Tetris::left()
 {
-	if(running && actTet->isActive())
+	if(running && actTet == NULL)
 	{
 		//log(game.actTet->checkLeft());
 		if(actTet->checkLeft())
@@ -149,7 +153,7 @@ void Tetris::left()
 }
 void Tetris::right()
 {
-	if(running && actTet->isActive())
+	if(running && actTet == NULL)
 	{
 		//log(game.actTet->checkRight());
 		if(actTet->checkRight())
@@ -160,7 +164,7 @@ void Tetris::right()
 }
 void Tetris::down()
 {
-	if(running && actTet->isActive())
+	if(running && actTet == NULL)
 	{
 		if(actTet->canDrop())
 		{
@@ -170,7 +174,7 @@ void Tetris::down()
 }
 void Tetris::hardDrop()
 {
-	if(running && actTet->isActive())
+	if(running && actTet == NULL)
 	{
 		while(actTet->canDrop())
 		{
@@ -181,14 +185,14 @@ void Tetris::hardDrop()
 }
 void Tetris::rotateRight()
 {
-	if(running && actTet->isActive())
+	if(running && actTet == NULL)
 	{
 		actTet->rotateRight();
 	}
 }
 void Tetris::rotateLeft()
 {
-	if(running && actTet->isActive())
+	if(running && actTet == NULL)
 	{
 		actTet->rotateLeft();
 	}
@@ -208,20 +212,21 @@ bool Tetris::canSpawn()
 	return true;
 }
 
-void Tetris::gameOver();
+void Tetris::gameOver()
 {
 	running = false;
 }
 
 void Tetris::checkQueue()
 {
-	if(tetQueue.empty() == true || tetQueue.size < 5)
+	if(tetQueue.empty() == true || tetQueue.size() < 5)
 	{
-		array<int,7> tempAry = {1,2,3,4,5,6,7};
+		int nums[] = {1,2,3,4,5,6,7};
+		vector<int> tempAry(nums, nums + sizeof(nums)/sizeof(int));
 		random_shuffle(tempAry.begin(), tempAry.end());
-		for(int i = 0; i < 7; i++)
+		for(int i = 0; i < (int)tempAry.size(); i++)
 		{
-			tetQueue.push_back(tempAry[i]);
+			tetQueue.push_back(tempAry.at(i));
 		}
 	}
 }
@@ -242,7 +247,7 @@ void Tetris::createGridMatrix()
 
 void Tetris::clearFilled()
 {
-	List<int> toClear;
+	list<int> toClear;
 	int tFilled = 1, i, k;
 	int preClearLvl = stat.getLevel();
 	for(i = ROWS-1; i > 0 && tFilled > 0; i--)
@@ -306,5 +311,5 @@ void Tetris::clearRow(int startRow)
 
 void Tetris::setCoord(int row, int col, int typ)
 {
-	game.matrix[row][col] = typ;
+	matrix[row][col] = typ;
 }

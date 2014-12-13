@@ -1,23 +1,22 @@
 #include "Tetris.h"
+#include "View.h"
 #include <curses.h>
 
 using namespace std;
 
 View::~View()
 {
-	if(game != NULL)
-	{
-		delete game;
-	}
 }
 
-void View::init()
+void View::init(const Tetris &tgame)
 {
+	game = tgame;
 	initscr();
 	noecho();
 	keypad(stdscr, TRUE);
 	//nodelay(stdscr, TRUE);
-
+	
+	int x,y;
 	getmaxyx(stdscr, y, x);
 	if(x < MIN_WIDTH || y < MIN_HEIGHT)
 	{
@@ -47,25 +46,62 @@ void View::update()
 	{
 		for(j = 0; j < COL; j++)
 		{
-			colorBlock(j, i, 
+			int color;
+			switch(game.matrix[i][j])
+			{
+				case 1:
+					color = CYAN_COLOR;
+					break;
+				case 2:
+					color = YELLOW_COLOR;
+					break;
+				case 3:
+					color = PURPLE_COLOR;
+					break;
+				case 4:
+					color = GREEN_COLOR;
+					break;
+				case 5:
+					color = RED_COLOR;
+					break;
+				case 6:
+					color = BLUE_COLOR;
+					break;
+				case 7:
+					color = WHITE_COLOR;
+					break;
+				default:
+					color = 0;
+					break;
+			}
+			if(color != 0)
+			{
+				wattron(gameWin, COLOR_PAIR(color));
+			}
+			mvwprintw(gameWin, i + 1, j * 2 + 1, "  ");
+			if(color != 0)
+			{
+				wattroff(gameWin, COLOR_PAIR(color));
+			}
+			//colorBlock(j, i, gameWin);
 		}
 	}
 }
 
-void View::createWin(const int rows, const int cols, const int ypos, const int xpos)
+WINDOW* View::createWin(int rows, int cols, int ypos, int xpos)
 {
 	WINDOW *win;
 	win = newwin(rows, cols, ypos, xpos);
 	refresh();
 	box(win, 0, 0);
-	refresh_win(win);
+	wrefresh(win);
 	return win;
 }
 
-void View::colorBlock(const int x, const int y, WINDOW* win)
+void View::colorBlock(int x, int y, WINDOW* win)
 {
 	int color;
-	switch(brick_type)
+	switch(game.matrix[x][y])
 	{
 		case 1:
 			color = CYAN_COLOR;
@@ -105,7 +141,7 @@ void View::colorBlock(const int x, const int y, WINDOW* win)
 
 int View::getInput()
 {
-	int ch, status;
+	int ch, status = 0;
 	//nodelay(stdscr, TRUE);
     if ((ch = getch()) != ERR) 
 	{

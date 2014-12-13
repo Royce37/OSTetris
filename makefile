@@ -16,7 +16,6 @@ OUTPUT=Tetris
 
 all:
 	make build
-#	make config
 	
 #config:	
 #	./create_config.sh
@@ -34,11 +33,6 @@ $(OUTPUT): $(OBJS)
 clean:
 	$(RM) $(OBJS) $(OUTPUT) config.h
 
-
-#install:
-#	$(MKDIR) $(BINDIR) $(MANDIR)
-#	$(INSTALL) $(OUTPUT) $(BINDIR)
-#	$(INSTALL) -m 644 $(MANS) $(MANDIR)
 
 
 

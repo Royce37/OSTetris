@@ -37,16 +37,16 @@ public:
 	
 	int dropCnt;
 	int delayCnt;
-	Stats stats;
+	Stats stat;
 	int matrix[ROWS][COL];
 
 	//update
 	//This is the main method of the game logic, everything happens in here
-	bool update();
+	void update();
 	bool init();
 	void reset();
 	void start();
-	bool pause();
+	void pause();
 	int checkColor(int row, int column);
 	bool isRunning();
 	void left();

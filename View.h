@@ -25,8 +25,9 @@ private:
 	WINDOW *gameWin;
 	WINDOW *scoreWin;
 	WINDOW *holdWin;
-	WINDOW* createWin(const int rows, const int cols, const int ypos, const int xpos);
-	void colorBlock(const int x, const int y, WINDOW* win);
+	WINDOW* createWin(int rows, int cols, int ypos, int xpos);
+	void colorBlock(int x, int y, WINDOW* win);
+	int BLACK_COLOR, CYAN_COLOR, YELLOW_COLOR, PURPLE_COLOR, GREEN_COLOR, RED_COLOR, BLUE_COLOR, WHITE_COLOR;
 };
 
 #endif

@@ -1,93 +1,101 @@
 #include "Tetris.h"
+#include "Tetrimino.h"
 
-int const pieces = {
-					{//I block
-						{{0,1},{1,1},{2,1},{3,1}}, {{2,0},{2,1},{2,2},{2,3}}, {{0,2},{1,2},{2,2},{3,2}}, {{1,0},{1,1},{1,2},{1,3}}
-					},
-					{//O block
-						{{0,0},{1,0},{0,1},{1,1}}, {{0,0},{1,0},{0,1},{1,1}}, {{0,0},{1,0},{0,1},{1,1}}, {{0,0},{1,0},{0,1},{1,1}}
-					},
-					{//T block
-						{{1,0},{0,1},{1,1},{2,1}},{{1,0},{1,1},{2,1},{1,2}},{{0,1},{1,1},{2,1},{1,2}},{{1,0},{0,1},{1,1},{1,2}}
-					},
-					{//S block
-						{{1,0},{2,0},{0,1},{1,1}},{{1,0},{1,1},{2,1},{2,2}},{{1,1},{2,1},{0,2},{1,2}},{{0,0},{0,1},{1,1},{1,2}}
-					},
-					{//Z block
-						{{0,0},{1,0},{1,1},{2,1}},{{2,0},{1,1},{2,1},{1,2}},{{0,1},{1,1},{1,2},{2,2}},{{1,0},{0,1},{1,1},{0,2}}
-					},
-					{//J block
-						{{0,0},{0,1},{1,1},{2,1}},{{1,0},{2,0},{1,1},{1,2}},{{0,1},{1,1},{2,1},{2,2}},{{1,0},{1,1},{0,2},{1,2}}
-					},
-					{//L block
-						{{2,0},{0,1},{1,1},{2,1}},{{1,0},{1,1},{1,2},{2,2}},{{0,1},{1,1},{2,1},{0,2}},{{0,0},{1,0},{1,1},{1,2}}
-					}
-				 };
+int const Tetrimino::pieces[7][4][PIECE_SIZE][2] = {
+										{//I block
+											{{0,1},{1,1},{2,1},{3,1}}, 
+											{{2,0},{2,1},{2,2},{2,3}}, 
+											{{0,2},{1,2},{2,2},{3,2}}, 
+											{{1,0},{1,1},{1,2},{1,3}}
+										},
+										{//O block
+											{{0,0},{1,0},{0,1},{1,1}}, 
+											{{0,0},{1,0},{0,1},{1,1}}, 
+											{{0,0},{1,0},{0,1},{1,1}}, 
+											{{0,0},{1,0},{0,1},{1,1}}
+										},
+										{//T block
+											{{1,0},{0,1},{1,1},{2,1}},{{1,0},{1,1},{2,1},{1,2}},{{0,1},{1,1},{2,1},{1,2}},{{1,0},{0,1},{1,1},{1,2}}
+										},
+										{//S block
+											{{1,0},{2,0},{0,1},{1,1}},{{1,0},{1,1},{2,1},{2,2}},{{1,1},{2,1},{0,2},{1,2}},{{0,0},{0,1},{1,1},{1,2}}
+										},
+										{//Z block
+											{{0,0},{1,0},{1,1},{2,1}},{{2,0},{1,1},{2,1},{1,2}},{{0,1},{1,1},{1,2},{2,2}},{{1,0},{0,1},{1,1},{0,2}}
+										},
+										{//J block
+											{{0,0},{0,1},{1,1},{2,1}},{{1,0},{2,0},{1,1},{1,2}},{{0,1},{1,1},{2,1},{2,2}},{{1,0},{1,1},{0,2},{1,2}}
+										},
+										{//L block
+											{{2,0},{0,1},{1,1},{2,1}},{{1,0},{1,1},{1,2},{2,2}},{{0,1},{1,1},{2,1},{0,2}},{{0,0},{1,0},{1,1},{1,2}}
+										}
+									 };
 				 
-int const rotRight = {
-						{//state 0 to R
-							{0,0},{-1,0},{-1,1},{0,-2},{-1,-2}
-						},
-						{//state 1/R to 2
-							{0,0},{1,0},{1,-1},{0,2},{1,2}
-						},
-						{//state 2 to L
-							{0,0},{1,0},{1,1},{0,-2},{1,-2}
-						},
-						{//state 3/L to 0
-							{0,0},{-1,0},{-1,-1},{0,2},{-1,2}
-						}
-					};
+int const Tetrimino::rotRight[4][5][2] = {
+								{//state 0 to R
+									{0,0},{-1,0},{-1,1},{0,-2},{-1,-2}
+								},
+								{//state 1/R to 2
+									{0,0},{1,0},{1,-1},{0,2},{1,2}
+								},
+								{//state 2 to L
+									{0,0},{1,0},{1,1},{0,-2},{1,-2}
+								},
+								{//state 3/L to 0
+									{0,0},{-1,0},{-1,-1},{0,2},{-1,2}
+								}
+							};
 				
- const int rotLeft = {
-						{//state 0 to L
-							{0,0},{1,0},{1,1},{0,-2},{1,-2}
-						},
-						{//state 1/R to 0
-							{0,0},{1,0},{1,-1},{0,2},{1,2}
-						},
-						{//state 2 to R
-							{0,0},{-1,0},{-1,1},{0,-2},{-1,-2}
-						},
-						{//state 3/L to 2
-							{0,0},{-1,0},{-1,-1},{0,2},{-1,2}
-						}
-					};
+ const int Tetrimino::rotLeft[4][5][2] = {
+								{//state 0 to L
+									{0,0},{1,0},{1,1},{0,-2},{1,-2}
+								},
+								{//state 1/R to 0
+									{0,0},{1,0},{1,-1},{0,2},{1,2}
+								},
+								{//state 2 to R
+									{0,0},{-1,0},{-1,1},{0,-2},{-1,-2}
+								},
+								{//state 3/L to 2
+									{0,0},{-1,0},{-1,-1},{0,2},{-1,2}
+								}
+							};
 					
-const int rotRightI = {
-						{//state 0 to R
-							{0,0},{-2,0},{1,0},{-2,-1},{1,2}
-						},
-						{//state 1/R to 2
-							{0,0},{-1,0},{2,0},{-1,2},{2,-1}
-						},
-						{//state 2 to L
-							{0,0},{2,0},{-1,0},{2,1},{-1,-2}
-						},
-						{//state 3/L to 0
-							{0,0},{1,0},{-2,0},{1,-2},{-2,1}
-						}
-					};
+const int Tetrimino::rotRightI[4][5][2] = {
+								{//state 0 to R
+									{0,0},{-2,0},{1,0},{-2,-1},{1,2}
+								},
+								{//state 1/R to 2
+									{0,0},{-1,0},{2,0},{-1,2},{2,-1}
+								},
+								{//state 2 to L
+									{0,0},{2,0},{-1,0},{2,1},{-1,-2}
+								},
+								{//state 3/L to 0
+									{0,0},{1,0},{-2,0},{1,-2},{-2,1}
+								}
+							};
 					
-const int rotLeftI = {
-							{//state 0 to L
-								{0,0},{-1,0},{2,0},{-1,2},{2,-1}
-							},
-							{//state 1/R to 0
-								{0,0},{2,0},{-1,0},{2,1},{-1,-2}
-							},
-							{//state 2 to R
-								{0,0},{1,0},{-2,0},{1,-2},{-2,1}
-							},
-							{//state 3/L to 2
-								{0,0},{-2,0},{1,0},{-2,-1},{1,2}
-							}
-						};
+const int Tetrimino::rotLeftI[4][5][2] = {
+								{//state 0 to L
+									{0,0},{-1,0},{2,0},{-1,2},{2,-1}
+								},
+								{//state 1/R to 0
+									{0,0},{2,0},{-1,0},{2,1},{-1,-2}
+								},
+								{//state 2 to R
+									{0,0},{1,0},{-2,0},{1,-2},{-2,1}
+								},
+								{//state 3/L to 2
+									{0,0},{-2,0},{1,0},{-2,-1},{1,2}
+								}
+							};
 
-void Tetrimino::init(int posx, int posy, int ttype, Tetris &tgame)
+void Tetrimino::init(int posx, int posy, int ttype, const Tetris &tgame)
 {
 	x = posx;
 	y = posy;
+	type = ttype-1;
 	typ = ttype;
 	game = tgame;
 	rot = 0;
@@ -101,9 +109,9 @@ bool Tetrimino::canDrop()
 	for(col = 0; col < PIECE_SIZE; col++)
 	{
 		//Check each coord to see if it has the same column
-		for(j = 0; j < pieces[type][rot].length; j++)
+		for(j = 0; j < 4; j++)
 		{
-			if(pieces[type][rot][j][0] === col && pieces[type][rot][j][1] > deepRow)
+			if(pieces[type][rot][j][0] == col && pieces[type][rot][j][1] > deepRow)
 			{
 				deepRow = pieces[type][rot][j][1];
 			}
@@ -150,7 +158,7 @@ bool Tetrimino::checkLeft()
 		//Check each coord to see if it has the same row
 		for(j = 0; j < PIECE_SIZE; j++)
 		{
-			if(pieces[type][rot][j][1] === row && pieces[type][rot][j][0] < leftCol)
+			if(pieces[type][rot][j][1] == row && pieces[type][rot][j][0] < leftCol)
 			{
 				leftCol = pieces[type][rot][j][0];
 				//log(leftCol);
@@ -197,7 +205,7 @@ bool Tetrimino::checkRight()
 		//Check each coord to see if it has the same row
 		for(j = 0; j < PIECE_SIZE; j++)
 		{
-			if(pieces[type][rot][j][1] === row && pieces[type][rot][j][0] > rightCol)
+			if(pieces[type][rot][j][1] == row && pieces[type][rot][j][0] > rightCol)
 			{
 				rightCol = pieces[type][rot][j][0];
 				//log(rightCol);
@@ -226,7 +234,7 @@ void Tetrimino::moveRight()
 		//game.matrix[y+offY][x+offX] = 0;
 	}
 	x++;
-	for(var i = 0; i < PIECE_SIZE; i++)
+	for(i = 0; i < PIECE_SIZE; i++)
 	{
 		offX = pieces[type][rot][i][0];
 		offY = pieces[type][rot][i][1];
@@ -235,13 +243,13 @@ void Tetrimino::moveRight()
 	}
 }
 
-bool Tetrimino::checkRotateRight()
+const int* Tetrimino::checkRotateRight()
 {
 	int testRot = (rot+1)%4;
 	int tempX = x;
 	int tempY = y;
-	int *offset = NULL; 
-	int testcase, baseX, baseY, i;
+	const int *offset = NULL; 
+	int testCase, baseX, baseY, i;
 	bool pass;
 	for(testCase = 0; testCase < ROT_SIZE; testCase++)
 	{
@@ -270,7 +278,7 @@ bool Tetrimino::checkRotateRight()
 		}
 		else
 		{
-			for(var i = 0; i < PIECE_SIZE && pass == true; i++)
+			for(i = 0; i < PIECE_SIZE && pass == true; i++)
 			{
 				//Test where the tetrimino would rotate to
 				baseX = tempX + pieces[type][testRot][i][0] + rotRight[rot][testCase][0];
@@ -297,7 +305,7 @@ bool Tetrimino::checkRotateRight()
 void Tetrimino::rotateRight()
 {
 	int i, offX, offY;
-	int *offset = NULL;
+	const int *offset = NULL;
 	for(i = 0; i < PIECE_SIZE; i++)
 	{
 		offX = pieces[type][rot][i][0];
@@ -322,12 +330,12 @@ void Tetrimino::rotateRight()
 	}
 }
 
-bool Tetrimino::checkRotateLeft()
+const int* Tetrimino::checkRotateLeft()
 {
-	int testRot = (tet.rot-1)%4;
-	int tempX = tet.x;
-	int tempY = tet.y;
-	int *offset = NULL;
+	int testRot = (rot-1)%4;
+	int tempX = x;
+	int tempY = y;
+	const int *offset = NULL;
 	bool pass;
 	int testCase, i, baseX, baseY;
 	for(testCase = 0; testCase < ROT_SIZE; testCase++)
@@ -386,7 +394,7 @@ bool Tetrimino::checkRotateLeft()
 void Tetrimino::rotateLeft()
 {
 	int i, offX, offY;
-	int *offset = NULL;
+	const int *offset = NULL;
 	for(i = 0; i < PIECE_SIZE; i++)
 	{
 		offX = pieces[type][rot][i][0];
@@ -396,7 +404,7 @@ void Tetrimino::rotateLeft()
 	}
 	offset = checkRotateLeft();
 	//log(offset);
-	if(offset != null)
+	if(offset != NULL)
 	{
 		rot = (rot-1)%4;
 		x += offset[0];
@@ -415,7 +423,7 @@ void Tetrimino::setActive(bool set)
 {
 	hasSpawned = set;
 }
-bool isActive()
-{
-	return hasSpawned;
-}
+//bool isActive()
+//{
+//	return hasSpawned;
+//}
