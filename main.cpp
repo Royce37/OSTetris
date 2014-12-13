@@ -18,7 +18,10 @@ int main()
 	int loops = 0;
 
 	Tetris game;
+	printf("Game initializing\n");
 	game.init();
+	
+	printf("Game initialized\n");
 	View view;
 	view.init(game);
 
@@ -26,7 +29,6 @@ int main()
 	int quit = 0;
 
     bool game_is_running = true;
-
     while( game_is_running ) 
 	{
 		while( GetTickCount() > next_game_tick && loops < MAX_FRAMESKIP) 
@@ -45,15 +47,6 @@ int main()
 		}
 		game.update();
         view.update();
-
-        /*sleep_time = next_game_tick - GetTickCount();
-        if( sleep_time >= 0 ) 
-		{
-            Sleep( sleep_time );
-        }
-        else 
-		{
-        }*/
     }
 	return 0;
 }

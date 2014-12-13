@@ -4,6 +4,10 @@
 
 using namespace std;
 
+View::View()
+{
+}
+
 View::~View()
 {
 }
@@ -11,6 +15,7 @@ View::~View()
 void View::init(const Tetris &tgame)
 {
 	game = tgame;
+	printf("test\n");
 	initscr();
 	noecho();
 	keypad(stdscr, TRUE);
@@ -21,6 +26,7 @@ void View::init(const Tetris &tgame)
 	if(x < MIN_WIDTH || y < MIN_HEIGHT)
 	{
 		endwin();
+		printf("Screen too small\n");
 		return;
 	}
 

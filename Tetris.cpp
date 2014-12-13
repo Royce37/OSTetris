@@ -7,11 +7,13 @@
 #include <algorithm>    // std::random_shuffle
 #include <ctime>        // std::time
 #include <cstdlib>      // std::rand, std::srand
+#include <cstdio>
 
 using namespace std;
 
 Tetris::Tetris()
 {
+	printf("Test");
 	baseDrp = .5;
 	FPS = 30;
 	drpRate = 1;
@@ -20,7 +22,8 @@ Tetris::Tetris()
 	placeDelay = 0;
 	snapped = false;
 	spdPerLvl = .05;
-	actTet =  new Tetrimino();
+	printf("Test2");
+	actTet = NULL;
 
 	dropCnt = 0;
 	delayCnt = 0;
@@ -48,7 +51,7 @@ void Tetris::update()
 				if(canSpawn())
 				{
 					//log("creating new tetrimino");
-					//actTet = new Tetrimino(4, 0, game.tetQueue.dequeue());
+					actTet = new Tetrimino();
 					actTet->init(4, 0, tetQueue.front(), *this);
 					tetQueue.pop_front();
 					checkQueue();
@@ -93,7 +96,7 @@ void Tetris::update()
 bool Tetris::init()
 {
 	// log("Initializing game in Tetris.init");
-	createGridMatrix();
+	//createGridMatrix();
 	running = false;
 	stat.init();
 	checkQueue();

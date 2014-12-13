@@ -1,6 +1,10 @@
 #include "Tetris.h"
 #include "Tetrimino.h"
 
+Tetrimino::Tetrimino(){}
+
+Tetrimino::~Tetrimino(){}
+
 int const Tetrimino::pieces[7][4][PIECE_SIZE][2] = {
 										{//I block
 											{{0,1},{1,1},{2,1},{3,1}}, 
