@@ -21,14 +21,14 @@ $(OUTPUT): $(OBJS)
 depend: .depend
 
 .depend: $(SRCS)
-    rm -f ./.depend
-    $(CXX) $(CPPFLAGS) -MM $^>>./.depend;
+	rm -f ./.depend
+	$(CXX) $(CPPFLAGS) -MM $^>>./.depend;
 
 clean:
 	$(RM) $(OBJS) $(OUTPUT)
 
 dist-clean: clean
-    $(RM) *~ .dependtool
+	$(RM) *~ .dependtool
 
 include .depend
 
