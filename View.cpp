@@ -187,7 +187,10 @@ int View::getInput()
 					status = 2;
 					break;
 				case 's':
-					game.start();
+					if(game.isRunning == false)
+					{
+						game.start();
+					}
 					break;
 			}
     }
