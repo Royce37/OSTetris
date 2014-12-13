@@ -13,7 +13,6 @@ using namespace std;
 
 Tetris::Tetris()
 {
-	printf("Test");
 	baseDrp = .5;
 	FPS = 30;
 	drpRate = 1;
@@ -22,7 +21,6 @@ Tetris::Tetris()
 	placeDelay = 0;
 	snapped = false;
 	spdPerLvl = .05;
-	printf("Test2");
 	actTet = NULL;
 
 	dropCnt = 0;

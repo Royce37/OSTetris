@@ -40,10 +40,12 @@ int main()
 		if(quit == 1)
 		{
 			game.pause();
+			quit = 0;
 		}
 		else if(quit == 2)
 		{
 			game_is_running = false;
+			quit = 0;
 		}
 		game.update();
         view.update();

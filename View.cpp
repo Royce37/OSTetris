@@ -42,7 +42,8 @@ void View::init(const Tetris &tgame)
 	init_pair(BLUE_COLOR, COLOR_WHITE, COLOR_BLUE);			//J
 	init_pair(WHITE_COLOR, COLOR_WHITE, COLOR_WHITE);		//L
 
-	gameWin = createWin((ROWS - hiddenRows), COL, 1, 1);
+	gameWin = createWin((ROWS - hiddenRows), COL*2, 1, 1);
+	keypad(gameWin, TRUE);
 }
 
 void View::update()
@@ -148,7 +149,7 @@ void View::colorBlock(int x, int y, WINDOW* win)
 int View::getInput()
 {
 	int ch, status = 0;
-	//nodelay(stdscr, TRUE);
+	nodelay(stdscr, TRUE);
     if ((ch = getch()) != ERR) 
 	{
         switch(ch)
